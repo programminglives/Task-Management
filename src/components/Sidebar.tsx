@@ -8,7 +8,6 @@ function Sidebar() {
                     <Link href="/" className="inline-block text-gray-600 hover:text-black my-4 w-full">
                         <span className="material-icons-outlined float-left pr-2">dashboard</span>
                         Home
-                        <span className="material-icons-outlined float-right">keyboard_arrow_right</span>
                     </Link>
                     <Link href="/task/create"
                           className="inline-block text-gray-600 hover:text-black my-4 w-full">

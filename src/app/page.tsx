@@ -5,13 +5,19 @@ import {Task} from "@/app/task/types";
 
 export default function Home() {
     const [tasks, setTasks] = useState<Task[]>([]);
+    const [filterType, setFilterType] = useState("and");
     const [statusFilter, setStatusFilter] = useState("all");
+    const [priorityFilter, setPriorityFilter] = useState("all");
 
     useEffect(() => {
         setTasks(JSON.parse(localStorage.getItem("tasks") ?? '[]'));
     }, [])
 
-    const filteredTasks = tasks.filter((task: Task) => (task.status == statusFilter || statusFilter == "all"))
+    const filteredTasks = tasks.filter((task: Task) => (
+        filterType === "and" ?
+            (task.status == statusFilter || statusFilter == "all") && (task.priority == priorityFilter || priorityFilter == "all") :
+            (task.status == statusFilter || statusFilter == "all") || (task.priority == priorityFilter || priorityFilter == "all")
+    ))
 
     const handleCompletedEvent = (id: string | null) => {
         if (confirm("Are you sure this task is completed?")) {
@@ -36,14 +42,18 @@ export default function Home() {
     }
 
     const handleDeleteAllTasks = () => {
-        if(tasks.length === 0) {
+        if (tasks.length === 0) {
             alert("You don't have any tasks to delete!!!")
             return
         }
-        if(confirm("Are you sure you want to delete all tasks?")) {
+        if (confirm("Are you sure you want to delete all tasks?")) {
             setTasks([])
             localStorage.removeItem("tasks");
         }
+    }
+
+    const handleChangeFilterType = (filterType: string) => {
+        setFilterType(filterType);
     }
 
     return (
@@ -53,7 +63,7 @@ export default function Home() {
                 <div className="mb-4">
                     <div className="flex flex-wrap gap-2">
                         <div className="bg-white p-6 rounded-lg shadow-lg">
-                            <h2 className="text-lg font-semibold mb-4">Filters</h2>
+                            <h2 className="text-lg font-semibold mb-4">Status Filter</h2>
                             <div className="flex flex-wrap gap-2">
                                 <button onClick={() => setStatusFilter("all")}
                                         className="cursor-pointer bg-blue-200 hover:bg-blue-300 py-1 px-2 rounded-lg text-sm">
@@ -70,8 +80,33 @@ export default function Home() {
                             </div>
                         </div>
                         <div className="bg-white p-6 rounded-lg shadow-lg">
+                            <h2 className="text-lg font-semibold mb-4">Priority Filter</h2>
+                            <div className="flex flex-wrap gap-2">
+                                <button onClick={() => setPriorityFilter("all")}
+                                        className="cursor-pointer bg-blue-200 hover:bg-blue-300 py-1 px-2 rounded-lg text-sm">
+                                    {![Priority.LOW, Priority.MEDIUM, Priority.HIGH].includes(priorityFilter) ? '✔' : ''} ️All
+                                </button>
+                                <button onClick={() => setPriorityFilter("high")}
+                                        className="bg-green-200 hover:bg-green-300 py-1 px-2 rounded-lg text-sm cursor-pointer">
+                                    {priorityFilter === Priority.HIGH ? '✔' : ''}High
+                                </button>
+                                <button onClick={() => setPriorityFilter("medium")}
+                                        className="bg-yellow-200 hover:bg-yellow-300 py-1 px-2 rounded-lg text-sm cursor-pointer">
+                                    {priorityFilter === Priority.MEDIUM ? '✔' : ''}Medium
+                                </button>
+                                <button onClick={() => setPriorityFilter("low")}
+                                        className="bg-yellow-200 hover:bg-yellow-300 py-1 px-2 rounded-lg text-sm cursor-pointer">
+                                    {priorityFilter === Priority.LOW ? '✔' : ''}Low
+                                </button>
+                            </div>
+                        </div>
+                        <div className="bg-white p-6 rounded-lg shadow-lg">
                             <h2 className="text-lg font-semibold mb-4">Features</h2>
                             <div className="flex flex-wrap gap-2">
+                                <button onClick={() => handleChangeFilterType(filterType == "and" ? 'or' : 'and')}
+                                        className="text-white cursor-pointer bg-blue-800 hover:bg-blue-900 py-1 px-2 rounded-lg text-sm">
+                                    Filter Type: {filterType !== "and" ? 'OR' : 'AND'}
+                                </button>
                                 <button onClick={handleDeleteAllTasks}
                                         className="text-white cursor-pointer bg-red-800 hover:bg-red-900 py-1 px-2 rounded-lg text-sm">
                                     Delete all tasks
@@ -192,7 +227,8 @@ export default function Home() {
                                             )) :
                                             (
                                                 <tr className="bg-white transition-all duration-500">
-                                                    <td colSpan="6" className="text-center p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
+                                                    <td colSpan="6"
+                                                        className="text-center p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
                                                         No Tasks Yet
                                                     </td>
                                                 </tr>
