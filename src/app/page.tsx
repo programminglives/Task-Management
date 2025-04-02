@@ -1,36 +1,27 @@
 "use client"
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {Priority, Status} from "@/globals/types";
+import {Task} from "@/app/task/types";
 
 export default function Home() {
-
+    const [tasks, setTasks] = useState<Task[]>([]);
     const [statusFilter, setStatusFilter] = useState("all");
 
-    const tasks = [
-        {
-            title: "Study completed",
-            description: "completed task",
-            due_date: "2020-02-02",
-            priority: Priority.HIGH,
-            status: Status.COMPLETED,
-        },
-        {
-            title: "Study pending",
-            description: "pending task",
-            due_date: "2020-02-02",
-            priority: Priority.MEDIUM,
-            status: Status.PENDING,
-        },
-        {
-            title: "Study pending low",
-            description: "pending task",
-            due_date: "2020-02-02",
-            priority: Priority.LOW,
-            status: Status.PENDING,
-        },
-    ]
+    useEffect(() => {
+        setTasks(JSON.parse(localStorage.getItem("tasks") ?? '[]'));
+    }, [])
 
-    const filteredTasks = tasks.filter((task) => (task.status == statusFilter || statusFilter == "all"))
+    const filteredTasks = tasks.filter((task: Task) => (task.status == statusFilter || statusFilter == "all"))
+
+    const handleDeleteEvent = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        if (confirm("Are you sure you want to delete this task?")) {
+            const idToDelete = event.currentTarget.getAttribute("data-id")
+            const remainingTasks = tasks.filter((task: Task) => (task.id !== idToDelete))
+            localStorage.setItem("tasks", JSON.stringify(remainingTasks));
+            setTasks(remainingTasks);
+        }
+    }
 
     return (
         <>
@@ -92,7 +83,7 @@ export default function Home() {
                                     </thead>
                                     <tbody className="divide-y divide-gray-300 ">
                                     {
-                                        filteredTasks.map((task, index) => (
+                                        filteredTasks.map((task: Task, index: number) => (
                                             <tr className="bg-white transition-all duration-500 hover:bg-gray-50"
                                                 key={index}>
                                                 <td className="">
@@ -112,23 +103,23 @@ export default function Home() {
                                                 </td>
                                                 <td className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
                                             <span
-                                                className={"rounded-xl px-2.5 py-1.5 text-xs font-medium "+
-                                                (task.priority == Priority.HIGH ? 'bg-red-300' : task.priority == Priority.MEDIUM ? 'bg-yellow-300' : 'bg-gray-300')}
+                                                className={"rounded-xl px-2.5 py-1.5 text-xs font-medium " +
+                                                    (task.priority == Priority.HIGH ? 'bg-red-300' : task.priority == Priority.MEDIUM ? 'bg-yellow-300' : 'bg-gray-300')}
                                             >
                                                 {task.priority}
                                             </span>
                                                 </td>
                                                 <td className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
                                                     <div
-                                                        className={"py-1.5 px-2.5 rounded-full flex justify-center w-20 items-center gap-1 "+(task.status == Status.COMPLETED ? 'bg-emerald-200' : 'bg-yellow-200')}>
-                                                        <p className={"font-medium text-xs "+ (task.status == Status.COMPLETED ? 'text-emerald-600' : 'text-yellow-600')}>
+                                                        className={"py-1.5 px-2.5 rounded-full flex justify-center w-20 items-center gap-1 " + (task.status == Status.COMPLETED ? 'bg-emerald-200' : 'bg-yellow-200')}>
+                                                        <p className={"font-medium text-xs " + (task.status == Status.COMPLETED ? 'text-emerald-600' : 'text-yellow-600')}>
                                                             {task.status}
                                                         </p>
                                                     </div>
                                                 </td>
                                                 <td className="flex p-5 items-center gap-0.5">
                                                     <button
-                                                        className="p-2  rounded-full bg-white group transition-all duration-500 hover:bg-indigo-600 flex item-center">
+                                                        className="p-2  rounded-full bg-white group transition-all duration-500 hover:bg-indigo-600 flex center cursor-pointer">
                                                         <svg className="cursor-pointer" width="20" height="20"
                                                              viewBox="0 0 20 20"
                                                              fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -137,8 +128,8 @@ export default function Home() {
                                                                   fill="#818CF8"></path>
                                                         </svg>
                                                     </button>
-                                                    <button
-                                                        className="p-2 rounded-full bg-white group transition-all duration-500 hover:bg-red-600 flex item-center">
+                                                    <button data-id={task.id} onClick={handleDeleteEvent}
+                                                            className="p-2 rounded-full bg-white group transition-all duration-500 hover:bg-red-600 flex item-center cursor-pointer">
                                                         <svg className="" width="20" height="20" viewBox="0 0 20 20"
                                                              fill="none"
                                                              xmlns="http://www.w3.org/2000/svg">
@@ -148,7 +139,7 @@ export default function Home() {
                                                         </svg>
                                                     </button>
                                                     <button
-                                                        className="p-2 rounded-full bg-white group transition-all duration-500 hover:bg-black flex item-center">
+                                                        className="p-2 rounded-full bg-white group transition-all duration-500 hover:bg-black flex center cursor-pointer">
                                                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                                              xmlns="http://www.w3.org/2000/svg">
                                                             <path className="stroke-black group-hover:stroke-white"
