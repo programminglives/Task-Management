@@ -38,6 +38,7 @@ function CreateTask() {
                                 type="text"
                                 id="title"
                                 name="title"
+                                value={task.title ?? ''}
                                 placeholder="Need to do XYZ"
                                 className="mt-1 block w-full p-2 rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                                 required
@@ -51,6 +52,7 @@ function CreateTask() {
                                 onChange={handleChangeEvent}
                                 id="description"
                                 name="description"
+                                value={task.description ?? ''}
                                 placeholder="1234 5678 9012 3456"
                                 className="mt-1 block w-full p-2 rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                                 required
@@ -65,6 +67,7 @@ function CreateTask() {
                                 type="datetime-local"
                                 id="due-date"
                                 name="due_date"
+                                value={task.due_date ?? ''}
                                 placeholder="MM/YY"
                                 className="mt-1 cursor-pointer block w-full p-2 rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                                 required
