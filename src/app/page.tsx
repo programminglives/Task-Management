@@ -2,6 +2,7 @@
 import {useState, useEffect} from "react";
 import {Priority, Status} from "@/globals/types";
 import {Task} from "@/app/task/types";
+import {toast} from "react-toastify";
 
 export default function Home() {
     const [tasks, setTasks] = useState<Task[]>([]);
@@ -28,6 +29,8 @@ export default function Home() {
                 setTasks([...otherTasks, completedTask])
             }
             localStorage.setItem("tasks", JSON.stringify([...otherTasks, completedTask]));
+            if (completedTask)
+                toast.success(completedTask.title + "was successfully marked completed!");
         }
     }
 
@@ -38,6 +41,7 @@ export default function Home() {
             const remainingTasks = tasks.filter((task: Task) => (task.id !== idToDelete))
             localStorage.setItem("tasks", JSON.stringify(remainingTasks));
             setTasks(remainingTasks);
+            toast.success("A task has been successfully deleted!");
         }
     }
 
@@ -49,6 +53,7 @@ export default function Home() {
         if (confirm("Are you sure you want to delete all tasks?")) {
             setTasks([])
             localStorage.removeItem("tasks");
+            toast.success("All the tasks have been deleted successfully!");
         }
     }
 

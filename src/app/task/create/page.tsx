@@ -1,7 +1,7 @@
 'use client'
 import {ChangeEvent, FormEvent, useState} from "react";
 import {emptyTask, Task} from "@/app/task/types";
-import {toast, ToastContainer} from "react-toastify";
+import {toast} from "react-toastify";
 
 function CreateTask() {
 
@@ -20,12 +20,11 @@ function CreateTask() {
         const storageTasks = JSON.parse(localStorage.getItem("tasks") ?? '[]');
         localStorage.setItem("tasks", JSON.stringify([...storageTasks, task]));
         setTask(emptyTask)
-        toast.success("You have created a new task!!!")
+        toast.success("You have successfully created a new task!!!")
     }
 
     return (
         <>
-            <ToastContainer/>
             <div className="flex items-center justify-center">
                 <div className="bg-white p-6 rounded-2xl shadow-lg max-w-md w-full">
                     <h1 className="text-2xl font-semibold mb-4 text-gray-800">Enter Task Information</h1>

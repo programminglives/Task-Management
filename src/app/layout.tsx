@@ -3,6 +3,7 @@ import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
+import {ToastContainer} from "react-toastify";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -32,21 +33,15 @@ export default function RootLayout({
                 rel="stylesheet"/>
             <title>Task Management</title>
         </head>
-        <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="bg-orange-100 min-h-screen">
-
             <Navbar/>
-
             <div className="flex flex-row pt-24 px-10 pb-4">
-
                 <Sidebar/>
                 {children}
-
             </div>
         </div>
+        <ToastContainer/>
         </body>
         </html>
     );
