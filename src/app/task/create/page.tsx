@@ -7,10 +7,10 @@ function CreateTask() {
 
     const [task, setTask] = useState<Task>(emptyTask);
 
-    const handleChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleChangeEvent = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setTask(prevState => ({
             ...prevState,
-            id: Date.now()+""+Math.trunc(Math.random()*100),
+            id: Date.now() + "" + Math.trunc(Math.random() * 100),
             [event.target.name]: event.target.value
         }));
     }
@@ -25,7 +25,7 @@ function CreateTask() {
 
     return (
         <>
-            <ToastContainer />
+            <ToastContainer/>
             <div className="flex items-center justify-center">
                 <div className="bg-white p-6 rounded-2xl shadow-lg max-w-md w-full">
                     <h1 className="text-2xl font-semibold mb-4 text-gray-800">Enter Task Information</h1>

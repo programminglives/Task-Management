@@ -84,7 +84,7 @@ export default function Home() {
                             <div className="flex flex-wrap gap-2">
                                 <button onClick={() => setPriorityFilter("all")}
                                         className="cursor-pointer bg-blue-200 hover:bg-blue-300 py-1 px-2 rounded-lg text-sm">
-                                    {![Priority.LOW, Priority.MEDIUM, Priority.HIGH].includes(priorityFilter) ? '✔' : ''} ️All
+                                    {![Priority.LOW, Priority.MEDIUM, Priority.HIGH].map(String).includes(priorityFilter) ? '✔' : ''} ️All
                                 </button>
                                 <button onClick={() => setPriorityFilter("high")}
                                         className="bg-green-200 hover:bg-green-300 py-1 px-2 rounded-lg text-sm cursor-pointer">
@@ -227,7 +227,7 @@ export default function Home() {
                                             )) :
                                             (
                                                 <tr className="bg-white transition-all duration-500">
-                                                    <td colSpan="6"
+                                                    <td colSpan={6}
                                                         className="text-center p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
                                                         No Tasks Yet
                                                     </td>
