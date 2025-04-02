@@ -66,7 +66,7 @@ function CreateTask() {
                                 id="due-date"
                                 name="due_date"
                                 placeholder="MM/YY"
-                                className="mt-1 block w-full p-2 rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                className="mt-1 cursor-pointer block w-full p-2 rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                                 required
                             />
                         </div>
@@ -76,7 +76,7 @@ function CreateTask() {
                                    className="block text-sm font-medium text-gray-700">Priority</label>
                             <select
                                 onChange={handleChangeEvent}
-                                className="w-full rounded-lg mt-1 p-2 border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                className="w-full rounded-lg mt-1 p-2 border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm cursor-pointer"
                                 name="priority" id="priority">
                                 <option value="medium">Medium</option>
                                 <option value="low">Low</option>
@@ -87,7 +87,7 @@ function CreateTask() {
                         <div>
                             <button
                                 type="submit"
-                                className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-700 transition"
+                                className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-700 transition cursor-pointer"
                             >
                                 Submit
                             </button>
