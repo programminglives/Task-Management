@@ -1,14 +1,40 @@
+'use client'
+import {ChangeEvent, FormEvent, useState} from "react";
+import {emptyTask, Task} from "@/app/task/types";
+import {toast, ToastContainer} from "react-toastify";
+
 function CreateTask() {
+
+    const [task, setTask] = useState<Task>(emptyTask);
+
+    const handleChangeEvent = (event: ChangeEvent<HTMLInputElement>) => {
+        setTask(prevState => ({
+            ...prevState,
+            id: Date.now()+""+Math.trunc(Math.random()*100),
+            [event.target.name]: event.target.value
+        }));
+    }
+
+    const handleFormSubmit = (event: FormEvent) => {
+        event.preventDefault();
+        const storageTasks = JSON.parse(localStorage.getItem("tasks") ?? '[]');
+        localStorage.setItem("tasks", JSON.stringify([...storageTasks, task]));
+        setTask(emptyTask)
+        toast.success("You have created a new task!!!")
+    }
+
     return (
         <>
+            <ToastContainer />
             <div className="flex items-center justify-center">
                 <div className="bg-white p-6 rounded-2xl shadow-lg max-w-md w-full">
                     <h1 className="text-2xl font-semibold mb-4 text-gray-800">Enter Task Information</h1>
-                    <form action="#" method="POST">
+                    <form onSubmit={handleFormSubmit}>
                         <div className="mb-4">
                             <label htmlFor="title" className="block text-sm font-medium text-gray-700">
                                 Title</label>
                             <input
+                                onChange={handleChangeEvent}
                                 type="text"
                                 id="title"
                                 name="title"
@@ -22,6 +48,7 @@ function CreateTask() {
                             <label htmlFor="description"
                                    className="block text-sm font-medium text-gray-700">Description</label>
                             <textarea
+                                onChange={handleChangeEvent}
                                 id="description"
                                 name="description"
                                 placeholder="1234 5678 9012 3456"
@@ -31,8 +58,10 @@ function CreateTask() {
                         </div>
 
                         <div className="mb-4">
-                            <label htmlFor="due-date" className="block text-sm font-medium text-gray-700">Due Date</label>
+                            <label htmlFor="due-date" className="block text-sm font-medium text-gray-700">Due
+                                Date</label>
                             <input
+                                onChange={handleChangeEvent}
                                 type="datetime-local"
                                 id="due-date"
                                 name="due_date"
@@ -43,9 +72,11 @@ function CreateTask() {
                         </div>
 
                         <div className="mb-4">
-                            <label htmlFor="priority" className="block text-sm font-medium text-gray-700">Priority</label>
+                            <label htmlFor="priority"
+                                   className="block text-sm font-medium text-gray-700">Priority</label>
                             <select
-                            className="w-full rounded-lg mt-1 p-2 border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                onChange={handleChangeEvent}
+                                className="w-full rounded-lg mt-1 p-2 border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                                 name="priority" id="priority">
                                 <option value="medium">Medium</option>
                                 <option value="low">Low</option>
